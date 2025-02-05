@@ -1,0 +1,26 @@
+name: Run Commands on EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-on-ec2:
+    runs-on: ubuntu-latest  # GitHub-hosted runner
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # Change this to your AWS region
+
+      - name: Start EC2 Instance (Optional)
+        run: |
+          echo "Fetching list of S3 buckets..."
+          aws s3 ls
